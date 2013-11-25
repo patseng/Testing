@@ -9,10 +9,21 @@
 
 from flask import Flask, render_template, request, redirect, Response, url_for
 import time, os, json, base64, hmac, sha, urllib
+from flask.ext.rqify import init_rqify
+from jobs import process
 
 app = Flask(__name__)
+init_rqify(app)
 
 # Listen for GET requests to yourdomain.com/account/
+@app.route("/")
+def home():
+    print "test"
+    url = "https://680bunch.s3.amazonaws.com/%2Ftest2.jpg?AWSAccessKeyId=AKIAIHIIBV3OWVZLO4RQ&Expires=1385411434&response-content-type=image%2Fjpeg&Signature=aoOa6S%2Ful1CTQZCWuyjoxJLzJxI%3D"
+    process.delay(url)
+    return "hello"
+
+
 @app.route("/account/")
 def account():
     # Show the account edit HTML page:
@@ -29,7 +40,7 @@ def submit_form():
 
     # Provide some procedure for storing the new details
     update_account(username, full_name, avatar_url)
-    
+
     # Redirect to the user's profile page, if appropriate
     return redirect(url_for('profile'))
 
@@ -49,10 +60,10 @@ def sign_s3():
     # Set the expiry time of the signature (in seconds) and declare the permissions of the file to be uploaded
     expires = int(time.time()+10)
     amz_headers = "x-amz-acl:public-read"
- 
+
     # Generate the PUT request that JavaScript will use:
     put_request = "PUT\n\n%s\n%d\n%s\n/%s/%s" % (mime_type, expires, amz_headers, S3_BUCKET, object_name)
-     
+
     # Generate the signature with which the request can be signed:
     signature = base64.encodestring(hmac.new(AWS_SECRET_KEY, put_request, sha).digest())
     # Remove surrounding whitespace and quote special characters:
@@ -65,13 +76,13 @@ def sign_s3():
         'signed_request': '%s?AWSAccessKeyId=%s&Expires=%d&Signature=%s' % (url, AWS_ACCESS_KEY, expires, signature),
         'url': url
     })
-    
+
     # Return the signed request and the anticipated URL back to the browser in JSON format:
     return Response(content, mimetype='text/plain; charset=x-user-defined')
-    
+
 # Main code
 if __name__ == '__main__':
     app.debug = True
     port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
-    
+

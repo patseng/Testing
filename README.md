@@ -4,7 +4,7 @@ FlaskDirectUploader
 Licensing
 ----------
 
-*General*: The files in this repository are, unless stated otherwise, released under the Apache License. You are free to redistribute this code with or without modification. The full license text is available [here](http://www.apache.org/licenses/LICENSE-2.0). 
+*General*: The files in this repository are, unless stated otherwise, released under the Apache License. You are free to redistribute this code with or without modification. The full license text is available [here](http://www.apache.org/licenses/LICENSE-2.0).
 
 *Other*: The script `s3upload.js` is copyright 2013 tadruj. Please find more information on this script at its home [repository](https://github.com/tadruj/s3upload-coffee-javascript). It is released under the Apache License, and the full license text is available [here](http://www.apache.org/licenses/LICENSE-2.0).
 
@@ -31,3 +31,5 @@ This code is mostly ready to be run as cloned, but a function `update_account()`
 * Commit your application to a local Git repository (e.g. `git init`, `git add .`, `git commit -m "version 1 commit"`, etc.)
 * Create the application on Heroku by adding a Git remote (`$ heroku create`)
 * Push your code to the new Heroku repo (`$ git push heroku master`)
+
+http://blooming-tundra-3896.herokuapp.com
