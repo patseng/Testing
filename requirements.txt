@@ -5,3 +5,5 @@ Werkzeug==0.9.4
 itsdangerous==0.23
 wsgiref==0.1.2
 Flask-Heroku-RQify>=0.1
+numpy==1.8.0
+boto==2.18.0

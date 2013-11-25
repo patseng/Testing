@@ -18,10 +18,12 @@ init_rqify(app)
 # Listen for GET requests to yourdomain.com/account/
 @app.route("/")
 def home():
-    print "test"
-    url = "https://680bunch.s3.amazonaws.com/%2Ftest2.jpg?AWSAccessKeyId=AKIAIHIIBV3OWVZLO4RQ&Expires=1385411434&response-content-type=image%2Fjpeg&Signature=aoOa6S%2Ful1CTQZCWuyjoxJLzJxI%3D"
-    process.delay(url)
-    return "hello"
+    url = request.args.get('url')
+    if url:
+        job = process.delay(url)
+        content = json.dumps({ 'job_id': job.id })
+        return Response(content, mimetype='text/plain; charset=x-user-defined')
+    return Response(json.dumps({'failure': 1}), mimetype='text/plain; charset=x-user-defined')
 
 
 @app.route("/account/")
