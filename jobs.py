@@ -4,6 +4,7 @@ from flask.ext.rq import job
 import numpy as np
 import urllib
 import boto
+import os
 
 @job
 def process(url):
@@ -30,7 +31,7 @@ def process(url):
 
 	# connect to s3 and upload the image
 	s3 = boto.connect_s3()
-	bucket = s3.get_bucket('680bunch')
+	bucket = s3.get_bucket(os.environ.get('S3_BUCKET'))
 	destination = bucket.new_key("updated.png")
 	print destination.set_contents_from_string(img_str)
 
